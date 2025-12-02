@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sign Up — BrandAffiliate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  background: linear-gradient(-45deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.modal-content {
+  background: rgba(0,0,0,0.6);
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  width: 100%;
+  max-width: 400px;
+  color: white;
+  text-align: center;
+}
+
+.modal-content h2 { margin-bottom: 25px; font-weight: 600; }
+.modal-content input {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 16px;
+}
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #ff7e5f;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.modal-content button:hover { background-color: #feb47b; }
+
+.hidden { display: none; }
+.userTypeBtn { width: 48%; margin: 5px 1%; }
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.remember-row input[type="checkbox"] { width: 18px; height: 18px; margin: 0; }
+.remember-row label { font-size: 14px; line-height: 1; cursor: pointer; }
+
+.password-container { position: relative; }
+.password-container .toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.strength-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.2);
+  margin-top: 4px;
+}
+.strength-bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: #ff4d4d;
+  transition: width 0.3s, background 0.3s;
+}
+.mismatch-msg {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #ff4d4d;
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="modal-content">
+  <!-- STEP 1: Choose Role -->
+  <div id="step1">
+    <h2>Sign Up — Choose Role</h2>
+    <button class="userTypeBtn" data-type="brand">Brand</button>
+    <button class="userTypeBtn" data-type="creator">Creator</button>
+  </div>
+
+  <!-- STEP 2: Sign Up Method -->
+  <div id="step2" class="hidden">
+    <h2 id="step2Title"></h2>
+    <button id="googleSignUpBtn">Continue with Google</button>
+
+    <form id="emailForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Password" required>
+        <span class="toggle-eye" id="togglePassword">👁️</span>
+      </div>
+      <div class="strength-bar"><div class="strength-bar-fill" id="strengthBar"></div></div>
+      <div class="remember-row">
+        <input type="checkbox" id="rememberMe" style="width:auto;">
+        <label for="rememberMe">Remember Me</label>
+      </div>
+      <button type="submit">Sign Up</button>
+      <div class="mismatch-msg" id="mismatchMsg">Password must include at least 1 number</div>
+    </form>
+
+    <button id="backStep1">Back</button>
+    <a href="index.html">
+    <button id="homeBtn">Back to Home</button>
+    </a>
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9",
+  measurementId: "G-JNZFPGTT1H"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+// Elements
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+const step2Title = document.getElementById("step2Title");
+const userTypeBtns = document.querySelectorAll(".userTypeBtn");
+const backStep1 = document.getElementById("backStep1");
+const googleSignUpBtn = document.getElementById("googleSignUpBtn");
+const emailForm = document.getElementById("emailForm");
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+const strengthBar = document.getElementById("strengthBar");
+const mismatchMsg = document.getElementById("mismatchMsg");
+
+let selectedRole = "";
+
+// Step 1: choose role
+userTypeBtns.forEach(btn => {
+  btn.onclick = () => {
+    selectedRole = btn.dataset.type;
+    localStorage.setItem("userRole", selectedRole);
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+    step2Title.innerText = `Sign Up as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`;
+  };
+});
+
+// Back to step 1
+backStep1.onclick = () => {
+  step2.classList.add("hidden");
+  step1.classList.remove("hidden");
+};
+
+// Google signup
+googleSignUpBtn.onclick = () => {
+  auth.signInWithPopup(provider)
+    .then(() => {
+      localStorage.setItem("userRole", selectedRole);
+      window.location.href = "index.html";
+    })
+    .catch(err => alert(err.message));
+};
+
+// Eye toggle
+togglePassword.onclick = () => {
+  if(passwordInput.type === "password"){
+    passwordInput.type = "text";
+  } else {
+    passwordInput.type = "password";
+  }
+};
+
+// Password strength & number check
+passwordInput.oninput = () => {
+  const val = passwordInput.value;
+  let strength = 0;
+  if(val.length >= 6) strength += 30;
+  if(/[0-9]/.test(val)) strength += 50;
+  if(/[A-Z]/.test(val)) strength += 20;
+
+  strengthBar.style.width = strength + "%";
+  strengthBar.style.background = strength < 50 ? "#ff4d4d" : strength < 80 ? "#ffd500" : "#00ff99";
+
+  // show mismatch if no number
+  if(!/[0-9]/.test(val)){
+    mismatchMsg.style.display = "block";
+  } else {
+    mismatchMsg.style.display = "none";
+  }
+};
+
+// Email/password signup
+emailForm.onsubmit = e => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const pass = passwordInput.value;
+  const remember = document.getElementById("rememberMe").checked;
+
+  if(!/[0-9]/.test(pass)){
+    alert("Password must include at least 1 number!");
+    return;
+  }
+
+  auth.setPersistence(
+    remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION
+  ).then(() => {
+    return auth.createUserWithEmailAndPassword(email, pass);
+  }).then(() => {
+    localStorage.setItem("userRole", selectedRole);
+    window.location.href = "index.html";
+  }).catch(err => alert(err.message));
+};
+</script>
+</body>
+</html>

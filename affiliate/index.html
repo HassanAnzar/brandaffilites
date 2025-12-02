@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<title>BrandAffiliate — Home</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  background: linear-gradient(-45deg, #0c0f14, #0b0d14, #03021a, #121727 ,#070f14);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+}
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 15px 30px;
+  color: #fff;
+}
+.header .logo { font-size: 26px; font-weight: bold; }
+.nav a { margin-left: 20px; color: #fff; text-decoration: none; font-weight: bold; }
+
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #222;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  color: #fff;
+}
+.hero-title { font-size: 32px; margin-bottom: 10px; }
+.hero-title span { display: block; font-size: 18px; margin-top: 6px; color: #00ffd5; }
+.hero-sub { font-size: 18px; }
+.hero-btn {
+  margin-top: 20px;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: none;
+  background: #00ffd5;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.hero-btn:hover { transform: scale(1.05); }
+
+.ads-section {
+  max-width: 1200px;
+  margin: 30px auto 50px auto;
+  padding: 40px 20px;
+  background: transparent;
+  color: #fff;
+}
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ads-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 25px;
+}
+
+/* HORIZONTAL PREMIUM CARD */
+.ad-card.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 18px 22px;
+  border-radius: 18px;
+  transition: 0.25s;
+}
+.ad-card.horizontal:hover {
+  border-color: #00ffd5;
+  transform: translateY(-4px);
+}
+
+.brand-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  background: white;
+  padding: 10px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+.ad-info { flex: 1; }
+.ad-info h3 { margin-bottom: 6px; }
+
+.ad-info .price {
+  font-size: 17px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.promote-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: #00ffd5;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* PLATFORM ICONS */
+.platform-box {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.platform-box span {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.platforms {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.platform-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,255,213,0.15);
+  border: 1px solid rgba(0,255,213,0.4);
+}
+.platform-item img {
+  width: 18px;
+  height: 18px;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px 0;
+  background-color: #222;
+  color: #fff;
+}
+.footer-links, .footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+.footer-links a, .footer-socials a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+.footer-socials img {
+  width: 20px;
+  height: 20px;
+}
+.password-container { position: relative; }
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+#passwordStrength {
+  transition: width 0.3s, background 0.3s;
+}
+.password-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-eye {
+  position: relative; /* remove absolute */
+  margin-top: 8px;   /* small spacing below input */
+  align-self: flex-end;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}.password-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.password-container input {
+  padding-right: 40px; /* space for the eye inside */
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 10px;          /* far right inside the input */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+
+
+</style>
+</head>
+<body>
+
+<!-- ================= USER TYPE & AUTH MODAL ================= -->
+<div id="userTypeModal" class="modal show">
+  <div class="modal-content">
+    <span class="close" id="closeAuth">&times;</span>
+
+    <!-- STEP 1 -->
+    <div id="step1">
+      <h2>Welcome to BrandAffiliate!</h2>
+      <p>Are you a Brand or a Creator?</p>
+      <button class="userTypeBtn" data-type="brand">Brand</button>
+      <button class="userTypeBtn" data-type="creator">Creator</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" class="hidden">
+      <h2 id="step2Title"></h2>
+      <p>Login or Sign Up?</p>
+      <button id="loginBtn">Login</button>
+      <button id="signupBtn">Sign Up</button>
+      <button id="backBtn">Back</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <!-- STEP 3 -->
+<div id="step3" class="hidden">
+  <h2 id="step3Title"></h2>
+  <button id="googleAuthBtn">Continue with Google</button>
+  <form id="emailForm">
+    <input type="email" id="email" placeholder="Email" required>
+
+    <!-- Password + show eye -->
+    <div class="password-container">
+      <input type="password" id="password" placeholder="Password" required>
+      <span class="toggle-eye" id="togglePassword">👁️</span>
+    </div>
+
+    <!-- Confirm password for Sign Up only -->
+    <div id="confirmPasswordContainer" class="hidden">
+      <div class="password-container">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <span class="toggle-eye" id="toggleConfirmPassword">👁️</span>
+      </div>
+      <div id="passwordStrength" style="height:6px;width:100%;border-radius:4px;margin-top:4px;background:#555;"></div>
+    </div>
+
+    <div class="remember-row">
+      <input type="checkbox" id="rememberMe" style="width:auto;">
+      <label for="rememberMe" style="margin:0; font-size:14px;">Remember Me</label>
+    </div>
+
+    <button type="submit">Submit</button>
+    <button type="button" id="forgotPassword">Forgot Password?</button>
+  </form>
+  <button id="backStep2">Back</button>
+</div>
+
+  </div>
+</div>
+
+<!-- ================= HEADER ================= -->
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="#">Home</a>
+    <a href="ads.html">Ads</a>
+    <button id="dashboardBtn" style="display:none;" class="dash-btn">Dashboard</button>
+    <a class="kaka" href="login.html" id="loginNav">Login</a>
+    <a class="signup-btn" id="signupNav" href="signup.html">Sign Up</a>
+    <button id="chatBtn" style="display:none;" onclick="window.location.href='chat.html'">
+  My Chats
+</button>
+
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <h1 class="hero-title">
+    Connect Brands With Affiliates
+    <span>Earn. Promote. Grow.</span>
+  </h1>
+  <p class="hero-sub">
+    Brands upload ads. Affiliates promote & earn.
+    The simplest affiliate marketplace ever.
+  </p>
+  <button class="hero-btn" onclick="window.location.href='ads.html'">Get Started</button>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/brand_affiliates._com/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+    <a href="https://www.youtube.com/@BrandAffiliates" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<!-- ================= CREATOR DASHBOARD ================= -->
+<div id="creatorDashboard" class="modal hidden">
+  <div class="modal-content">
+    <span id="closeDashBtn" class="close">✖</span>
+    <h2>Creator Dashboard</h2>
+    <input id="adTitle" placeholder="Ad Title">
+    <input id="adPrice" type="number" placeholder="Price per 1000 views">
+    <button onclick="uploadAd()">Upload Ad</button>
+    <h3>Your Ads</h3>
+    <div id="myAds"></div>
+  </div>
+</div>
+
+<!-- ================= FIREBASE ================= -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+    authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+    projectId: "thebrandaffiliates-1b39f",
+    storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+    messagingSenderId: "92844688252",
+    appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9",
+    measurementId: "G-JNZFPGTT1H"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+</script>
+
+<!-- ================= LOGIC ================= -->
+<script>
+// All modal/auth/dashboard logic same as before
+const modal=document.getElementById("userTypeModal");
+const closeBtn=document.getElementById("closeAuth");
+const step1=document.getElementById("step1");
+const step2=document.getElementById("step2");
+const step3=document.getElementById("step3");
+const step2Title=document.getElementById("step2Title");
+const step3Title=document.getElementById("step3Title");
+const loginBtn=document.getElementById("loginBtn");
+const signupBtn=document.getElementById("signupBtn");
+const backBtn=document.getElementById("backBtn");
+const backStep2=document.getElementById("backStep2");
+const googleAuthBtn=document.getElementById("googleAuthBtn");
+const emailForm=document.getElementById("emailForm");
+const forgotPassword=document.getElementById("forgotPassword");
+const dashboardBtn=document.getElementById("dashboardBtn");
+const creatorDashboard=document.getElementById("creatorDashboard");
+const closeDashBtn=document.getElementById("closeDashBtn");
+const adTitle=document.getElementById("adTitle");
+const adPrice=document.getElementById("adPrice");
+const myAds=document.getElementById("myAds");
+const rememberMe=document.getElementById("rememberMe");
+let selectedType="";
+
+const popupShown=sessionStorage.getItem("authPopupShown");
+closeBtn.onclick=()=>{modal.classList.remove("show");sessionStorage.setItem("authPopupShown","true");};
+document.querySelectorAll(".userTypeBtn").forEach(btn=>{btn.onclick=()=>{selectedType=btn.dataset.type;localStorage.setItem("userRole",selectedType);step1.classList.add("hidden");step2.classList.remove("hidden");step2Title.innerText=`You chose ${selectedType}`;}});
+loginBtn.onclick=()=>showStep3("login");
+signupBtn.onclick=()=>showStep3("signup");
+function showStep3(mode){step2.classList.add("hidden");step3.classList.remove("hidden");step3Title.innerText=`${mode==="login"?"Login":"Sign Up"} as ${selectedType}`;}
+backBtn.onclick=()=>{step2.classList.add("hidden");step1.classList.remove("hidden");};
+backStep2.onclick=()=>{step3.classList.add("hidden");step2.classList.remove("hidden");};
+googleAuthBtn.onclick=()=>{auth.signInWithPopup(provider).then(()=>{if(selectedType)localStorage.setItem("userRole",selectedType);modal.classList.remove("show");sessionStorage.setItem("authPopupShown","true");}).catch(err=>alert(err.message));};
+emailForm.onsubmit=e=>{e.preventDefault();const email=emailForm.email.value;const pass=emailForm.password.value;const remember=rememberMe.checked;auth.setPersistence(remember?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION).then(()=>step3Title.innerText.includes("Sign Up")?auth.createUserWithEmailAndPassword(email,pass):auth.signInWithEmailAndPassword(email,pass)).then(()=>{if(selectedType)localStorage.setItem("userRole",selectedType);modal.classList.remove("show");sessionStorage.setItem("authPopupShown","true");}).catch(err=>alert(err.message));};
+forgotPassword.onclick=()=>{const email=document.getElementById("email").value;if(email){auth.sendPasswordResetEmail(email).then(()=>alert("Password reset email sent!")).catch(err=>alert(err.message));}else alert("Please enter your email first.");};
+auth.onAuthStateChanged(user=>{if(user){if(localStorage.getItem("userRole")==="creator"){dashboardBtn.style.display="inline-block";showMyAds();}else dashboardBtn.style.display="none";modal.classList.remove("show");sessionStorage.setItem("authPopupShown","true");}else{dashboardBtn.style.display="none";if(!popupShown){modal.classList.add("show");sessionStorage.setItem("authPopupShown","true");}else{modal.classList.remove("show");}}});
+dashboardBtn.onclick=()=>creatorDashboard.classList.remove("hidden");
+closeDashBtn.onclick=()=>creatorDashboard.classList.add("hidden");
+function uploadAd(){if(!auth.currentUser)return alert("Login first!");const ads=JSON.parse(localStorage.getItem("ads"))||[];ads.push({title:adTitle.value,price:adPrice.value,owner:auth.currentUser.email});localStorage.setItem("ads",JSON.stringify(ads));adTitle.value="";adPrice.value="";showMyAds();}
+function showMyAds(){const ads=JSON.parse(localStorage.getItem("ads"))||[];myAds.innerHTML="";ads.forEach((ad,i)=>{if(auth.currentUser&&ad.owner===auth.currentUser.email){myAds.innerHTML+=`<div style="margin-top:10px">${ad.title} — $${ad.price}<button onclick="deleteAd(${i})">Delete</button></div>`;}});}
+function deleteAd(i){const ads=JSON.parse(localStorage.getItem("ads"));ads.splice(i,1);localStorage.setItem("ads",JSON.stringify(ads));showMyAds();}
+// for the chat
+const chatBtn = document.getElementById("chatBtn");
+
+auth.onAuthStateChanged(user => {
+    if(user){
+        // Show dashboard button if creator
+        if(localStorage.getItem("userRole")==="creator"){
+            dashboardBtn.style.display = "inline-block";
+        } else {
+            dashboardBtn.style.display = "none";
+        }
+
+        // Show chat button for any logged-in user
+        chatBtn.style.display = "inline-block";
+    } else {
+        dashboardBtn.style.display = "none";
+        chatBtn.style.display = "none";
+    }
+});
+
+
+</script>
+<script>
+  // Password eye toggle
+const passwordInput = document.getElementById("password");
+const togglePassword = document.getElementById("togglePassword");
+togglePassword.onclick = () => {
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+};
+
+// Confirm password for Sign Up
+const confirmContainer = document.getElementById("confirmPasswordContainer");
+const confirmInput = document.getElementById("confirmPassword");
+const toggleConfirm = document.getElementById("toggleConfirmPassword");
+const strengthBar = document.getElementById("passwordStrength");
+
+toggleConfirm.onclick = () => {
+  confirmInput.type = confirmInput.type === "password" ? "text" : "password";
+};
+
+// Show confirm password and strength only for Sign Up
+function updateStep3UI(mode){
+  if(mode==="signup"){
+    confirmContainer.classList.remove("hidden");
+  } else {
+    confirmContainer.classList.add("hidden");
+  }
+}
+
+// Password strength check
+passwordInput.oninput = () => {
+  const val = passwordInput.value;
+  let strength = 0;
+  if(val.length >= 6) strength++;
+  if(/\d/.test(val)) strength++;
+  if(/[A-Z]/.test(val)) strength++;
+  if(/[!@#$%^&*]/.test(val)) strength++;
+  const colors = ["#f44336","#ff9800","#ffc107","#4caf50"];
+  strengthBar.style.width = (strength*25)+"%";
+  strengthBar.style.background = colors[strength-1]||"#555";
+};
+
+// Password match check on submit
+emailForm.onsubmit = e => {
+  e.preventDefault();
+  const email = emailForm.email.value;
+  const pass = passwordInput.value;
+  const remember = rememberMe.checked;
+
+  if(step3Title.innerText.includes("Sign Up")){
+    const confirmPass = confirmInput.value;
+    if(pass !== confirmPass){
+      alert("Passwords do not match!");
+      return;
+    }
+    if(!/\d/.test(pass)){
+      alert("Password must include at least one number!");
+      return;
+    }
+  }
+
+  auth.setPersistence(remember?firebase.auth.Auth.Persistence.LOCAL:firebase.auth.Auth.Persistence.SESSION)
+    .then(() => step3Title.innerText.includes("Sign Up")
+      ? auth.createUserWithEmailAndPassword(email, pass)
+      : auth.signInWithEmailAndPassword(email, pass))
+    .then(() => {
+      if(selectedType) localStorage.setItem("userRole", selectedType);
+      modal.classList.remove("show");
+      sessionStorage.setItem("authPopupShown","true");
+    }).catch(err => alert(err.message));
+};
+
+// Update UI when login/signup selected
+loginBtn.onclick = () => { updateStep3UI("login"); showStep3("login"); }
+signupBtn.onclick = () => { updateStep3UI("signup"); showStep3("signup"); }
+
+</script>
+</body>
+</html>

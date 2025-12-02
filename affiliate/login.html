@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="kuta.png">
+  <title>Login — BrandAffiliate</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: linear-gradient(-45deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .login-container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 400px;
+      color: white;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      font-size: 16px;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      user-select: none;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #ff7e5f;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-container button:hover {
+      background-color: #feb47b;
+    }
+
+    .login-container a {
+      color: #fff;
+      text-decoration: underline;
+      font-size: 14px;
+      display: block;
+      margin-top: 15px;
+    }
+
+    .remember-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .remember-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .remember-row span {
+      font-size: 14px;
+      line-height: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <h2>Login to BrandAffiliate</h2>
+
+    <button id="googleAuthBtn">Continue with Google</button>
+
+    <form id="emailForm">
+      <input type="email" id="email" placeholder="Email" required>
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Password" required>
+        <span class="toggle-eye" id="togglePassword">👁️</span>
+      </div>
+      <div class="remember-row">
+        <input type="checkbox" id="rememberMe">
+        <span>Remember Me</span>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+
+    <button id="forgotPassword">Forgot Password?</button>
+    <a href="signup.html">Don't have an account? Sign Up</a>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+  <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9",
+  measurementId: "G-JNZFPGTT1H"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+const googleAuthBtn = document.getElementById("googleAuthBtn");
+const emailForm = document.getElementById("emailForm");
+const forgotPassword = document.getElementById("forgotPassword");
+const rememberMe = document.getElementById("rememberMe");
+const togglePassword = document.getElementById("togglePassword");
+const passwordInput = document.getElementById("password");
+
+// Google login
+googleAuthBtn.onclick = () => {
+  auth.signInWithPopup(provider)
+      .then(() => window.location.href = "index.html")
+      .catch(err => alert(err.message));
+};
+
+// Email/password login with "Remember Me"
+emailForm.onsubmit = e => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const pass = passwordInput.value;
+  const remember = rememberMe.checked;
+
+  auth.setPersistence(
+    remember ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION
+  ).then(() => auth.signInWithEmailAndPassword(email, pass))
+    .then(() => window.location.href = "index.html")
+    .catch(err => alert(err.message));
+};
+
+// Forgot password
+forgotPassword.onclick = () => {
+  const email = document.getElementById("email").value;
+  if (!email) { alert("Please enter your email first."); return; }
+
+  const actionCodeSettings = {
+    url: window.location.origin + "/password.html",
+    handleCodeInApp: true
+  };
+
+  auth.sendPasswordResetEmail(email, actionCodeSettings)
+    .then(() => alert("Reset link sent to your email!"))
+    .catch(err => alert(err.message));
+};
+
+// Toggle password visibility
+togglePassword.onclick = () => {
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+};
+  </script>
+</body>
+</html>

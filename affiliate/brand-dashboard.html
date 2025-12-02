@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/x-icon" href="kuta.png">
+  <title>BrandAffiliate — Creator Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <style>
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: #111;
+    margin: 0;
+    padding: 0;
+    color: #fff;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    padding: 15px 30px;
+  }
+  .header .logo {
+    font-size: 26px;
+    font-weight: bold;
+  }
+  .dashboard-section {
+    max-width: 1000px;
+    margin: 30px auto 50px auto;
+    padding: 25px;
+    background-color: #1c1c1c;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+  }
+  .dashboard-section h2 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #ffcc66;
+  }
+  .dashboard-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  .dashboard-controls input,
+  .dashboard-controls textarea {
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: #fff;
+    transition: 0.3s;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .dashboard-controls input:focus,
+  .dashboard-controls textarea:focus {
+    outline: none;
+    border-color: #ff9900;
+    box-shadow: 0 0 10px rgba(255,153,0,0.5);
+  }
+  .dashboard-controls button {
+    background: linear-gradient(45deg,#ff8c42,#ff5e62);
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  .dashboard-controls button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(45deg,#ff5e62,#ff8c42);
+  }
+  #myAds .ad-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #222;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  }
+  #myAds .ad-item span {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  #myAds .ad-item img {
+    max-width: 120px;
+    border-radius: 15px;
+    margin-bottom: 8px;
+  }
+  #myAds .ad-item button {
+    align-self: flex-start;
+    background-color: #ff5e62;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  #myAds .ad-item button:hover {
+    transform: scale(1.05);
+    background-color: #ff8c42;
+  }
+  .footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #222;
+    color: #fff;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+  }
+  .platform-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .dropdown {
+    position: relative;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 10px 15px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .dropdown-selected {
+    color: #fff;
+  }
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #222;
+    border: 1px solid #555;
+    border-radius: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    z-index: 10;
+  }
+  .dropdown-options label {
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .selected-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 5px;
+  }
+  .selected-platforms span {
+    background: #ff8c42;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    color: #fff;
+  }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="ads.html">Ads</a>
+    <button id="dashboardBtn" style="display:none;" class="dash-btn">Dashboard</button>
+    <a href="#" id="logoutNav">Logout</a>
+  </nav>
+</header>
+
+<section class="dashboard-section">
+  <h2>Creator Dashboard</h2>
+  <p style="text-align:center;font-size:14px;color:#ff9f43;">
+    💼 BrandAffiliate charges a fixed <b>10% platform service fee</b> on every campaign.
+  </p>
+
+  <div class="dashboard-controls">
+    <input id="adTitle" placeholder="Ad Title">
+    <input id="maxViews" type="number" placeholder="Maximum Views (e.g. 100000)">
+    <input id="adPrice" type="number" placeholder="Price per 1000 views (USD)">
+
+    <div id="priceBreakdown" style="background:#2a2a2a;padding:15px;border-radius:15px;font-size:14px;">
+      <p>Total Campaign Cost: <b>$<span id="totalCost">0</span></b></p>
+      <p>Platform Fee (10%): <b>$<span id="platformFee">0</span></b></p>
+      <p>Creator Will Earn: <b>$<span id="creatorEarn">0</span></b></p>
+      <p style="color:#ff9f43;font-size:12px;margin-top:8px;">
+        ⚠ You must pay the full amount upfront before this ad is published.
+      </p>
+    </div>
+
+    <input type="file" id="adLogo" accept="image/*">
+    <textarea id="adDesc" placeholder="Ad Description"></textarea>
+
+    <div class="platform-selector">
+      <label>Select Platforms:</label>
+      <div id="platformDropdown" class="dropdown">
+        <div class="dropdown-selected">Choose platforms...</div>
+        <div class="dropdown-options">
+          <label><input type="checkbox" value="Instagram"> Instagram</label>
+          <label><input type="checkbox" value="TikTok"> TikTok</label>
+          <label><input type="checkbox" value="YouTube"> YouTube</label>
+          <label><input type="checkbox" value="Twitter"> Twitter</label>
+          <label><input type="checkbox" value="Reddit"> Reddit</label>
+          <label><input type="checkbox" value="Facebook"> Facebook</label>
+        </div>
+      </div>
+      <div id="selectedPlatforms" class="selected-platforms"></div>
+    </div>
+
+    <button id="uploadBtn">Proceed to Payment</button>
+  </div>
+
+  <h3>Your Ads</h3>
+  <div id="myAds"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/brand_affiliates._com/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg"></a>
+    <a href="https://www.youtube.com/@BrandAffiliates" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg"></a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
+
+<script>
+const uploadBtn = document.getElementById("uploadBtn");
+const myAds = document.getElementById("myAds");
+const adTitle = document.getElementById("adTitle");
+const adPrice = document.getElementById("adPrice");
+const maxViews = document.getElementById("maxViews");
+const adLogo = document.getElementById("adLogo");
+const adDesc = document.getElementById("adDesc");
+const totalCostEl = document.getElementById("totalCost");
+const platformFeeEl = document.getElementById("platformFee");
+const creatorEarnEl = document.getElementById("creatorEarn");
+const logoutNav = document.getElementById("logoutNav");
+
+const dropdown = document.getElementById("platformDropdown");
+const dropdownOptions = dropdown.querySelector(".dropdown-options");
+const dropdownSelected = dropdown.querySelector(".dropdown-selected");
+const selectedPlatformsContainer = document.getElementById("selectedPlatforms");
+const checkboxes = dropdownOptions.querySelectorAll("input[type=checkbox]");
+
+auth.onAuthStateChanged(user => {
+  if(!user || localStorage.getItem("userRole") !== "creator"){
+    alert("You must be logged in as a creator to access this page!");
+    window.location.href = "index.html";
+  } else {
+    showMyAds();
+  }
+});
+
+dropdownSelected.addEventListener("click", () => {
+  dropdownOptions.style.display = dropdownOptions.style.display === "flex" ? "none" : "flex";
+});
+
+function updateSelectedPlatforms() {
+  const selected = [];
+  checkboxes.forEach(cb => { if(cb.checked) selected.push(cb.value); });
+  selectedPlatformsContainer.innerHTML = selected.map(p => `<span>${p}</span>`).join("");
+  dropdownSelected.textContent = selected.length ? `${selected.length} selected` : "Choose platforms...";
+}
+checkboxes.forEach(cb => cb.addEventListener("change", updateSelectedPlatforms));
+document.addEventListener("click", e => { if(!dropdown.contains(e.target)) dropdownOptions.style.display = "none"; });
+
+function calculatePricing() {
+  const views = Number(maxViews.value);
+  const price = Number(adPrice.value);
+  if (!views || !price) return;
+  const total = (views / 1000) * price;
+  const fee = total * 0.10;
+  const creator = total - fee;
+  totalCostEl.textContent = total.toFixed(2);
+  platformFeeEl.textContent = fee.toFixed(2);
+  creatorEarnEl.textContent = creator.toFixed(2);
+}
+maxViews.addEventListener("input", calculatePricing);
+adPrice.addEventListener("input", calculatePricing);
+
+uploadBtn.onclick = () => {
+  const selectedPlatforms = Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+  const total = (maxViews.value / 1000) * adPrice.value;
+  const fee = total * 0.10;
+  const creator = total - fee;
+
+  const adData = {
+    title: adTitle.value,
+    pricePer1000: adPrice.value,
+    maxViews: maxViews.value,
+    totalCost: total.toFixed(2),
+    platformFee: fee.toFixed(2),
+    creatorEarn: creator.toFixed(2),
+    logo: "",
+    description: adDesc.value,
+    owner: auth.currentUser.email,
+    platforms: selectedPlatforms,
+    paid: false
+  };
+
+  const reader = new FileReader();
+  reader.onload = function() {
+    if (adLogo.files[0]) adData.logo = reader.result;
+    localStorage.setItem("pendingAdPayment", JSON.stringify(adData));
+    window.location.href = "payment.html";
+  };
+  if (adLogo.files[0]) reader.readAsDataURL(adLogo.files[0]);
+  else reader.onload();
+};
+
+function showMyAds(){
+  const ads = JSON.parse(localStorage.getItem("ads")) || [];
+  myAds.innerHTML = "";
+  ads.forEach((ad,i)=>{
+    if(auth.currentUser && ad.owner === auth.currentUser.email && ad.paid){
+      myAds.innerHTML += `
+        <div class="ad-item">
+          ${ad.logo ? `<img src="${ad.logo}">` : ''}
+          <span><strong>${ad.title}</strong> — $${ad.totalCost}</span>
+          ${ad.description ? `<span>${ad.description}</span>` : ''}
+          ${ad.platforms ? `<span>Platforms: ${ad.platforms.join(', ')}</span>` : ''}
+          <button onclick="deleteAd(${i})">Delete</button>
+        </div>
+      `;
+    }
+  });
+}
+
+function deleteAd(i){
+  const ads = JSON.parse(localStorage.getItem("ads"));
+  ads.splice(i,1);
+  localStorage.setItem("ads", JSON.stringify(ads));
+  showMyAds();
+}
+
+logoutNav.onclick = () => {
+  auth.signOut().then(() => {
+    localStorage.removeItem("userRole");
+    window.location.href = "index.html";
+  });
+};
+</script>
+</body>
+</html>

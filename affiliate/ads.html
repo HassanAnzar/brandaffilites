@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<title>BrandAffiliate — Browse Campaigns</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  background: linear-gradient(-45deg, #0c0f14, #0b0d14, #03021a, #121727 ,#070f14);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+}
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 15px 30px;
+  color: #fff;
+}
+.header .logo { font-size: 26px; font-weight: bold; }
+.nav a { margin-left: 20px; color: #fff; text-decoration: none; font-weight: bold; }
+
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #222;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  color: #fff;
+}
+.hero-title { font-size: 32px; margin-bottom: 10px; }
+.hero-sub { font-size: 18px; }
+
+.ads-section {
+  max-width: 1200px;
+  margin: 30px auto 50px auto;
+  padding: 40px 20px;
+  background: transparent;
+  color: #fff;
+}
+.section-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ads-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 25px;
+}
+
+/* HORIZONTAL PREMIUM CARD */
+.ad-card.horizontal {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 18px 22px;
+  border-radius: 18px;
+  transition: 0.25s;
+}
+.ad-card.horizontal:hover {
+  border-color: #00ffd5;
+  transform: translateY(-4px);
+}
+
+.brand-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  background: white;
+  padding: 10px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+.ad-info { flex: 1; }
+.ad-info h3 { margin-bottom: 6px; }
+
+.ad-info .price {
+  font-size: 17px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.promote-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: #00ffd5;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* PLATFORM ICONS */
+.platform-box {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.platform-box span {
+  font-size: 12px;
+  opacity: 0.7;
+}
+.platforms {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.platform-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,255,213,0.15);
+  border: 1px solid rgba(0,255,213,0.4);
+}
+.platform-item img {
+  width: 18px;
+  height: 18px;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px 0;
+  background-color: #222;
+  color: #fff;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="ads-dashboard.html" id="dashboardLink" style="display:none;">Creator Dashboard</a>
+    <a class="kaka" href="login.html" id="loginNav">Login</a>
+    <a class="kaka" href="signup.html" id="signupNav">Sign Up</a>
+    <a href="#" id="logoutNav" style="display:none;">Logout</a>
+    <button id="chatBtn" style="display:none;" onclick="window.location.href='chat.html'">
+      My Chats
+    </button>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1 class="hero-title">Explore Campaigns</h1>
+  <p class="hero-sub">Browse all active campaigns, check CPMs, and apply to promote.</p>
+</section>
+
+<section class="ads-section">
+  <h2 class="section-title">All Campaigns</h2>
+  <div class="ads-grid" id="adsContainer"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/brand_affiliates._com/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+    <a href="https://www.youtube.com/@BrandAffiliates" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
+
+<script>
+const dashboardLink = document.getElementById("dashboardLink");
+const loginNav = document.getElementById("loginNav");
+const signupNav = document.getElementById("signupNav");
+const logoutNav = document.getElementById("logoutNav");
+
+auth.onAuthStateChanged(user => {
+  if(user) {
+    const role = localStorage.getItem("userRole");
+    loginNav.style.display = "none";
+    signupNav.style.display = "none";
+    logoutNav.style.display = "inline-block";
+    dashboardLink.style.display = (role === "creator") ? "inline-block" : "none";
+  } else {
+    loginNav.style.display = "inline-block";
+    signupNav.style.display = "inline-block";
+    logoutNav.style.display = "none";
+    dashboardLink.style.display = "none";
+  }
+});
+
+logoutNav.onclick = () => {
+  auth.signOut().then(() => {
+    localStorage.removeItem("userRole");
+  });
+};
+
+// Platform icons
+const platformIcons = {
+  Instagram: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg",
+  TikTok: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg",
+  YouTube: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg",
+  Twitter: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg",
+  Reddit: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/reddit.svg",
+  Facebook: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+};
+
+// Render ONLY PAID ads from localStorage
+function renderAds() {
+  const ads = JSON.parse(localStorage.getItem("ads")) || [];
+  const paidAds = ads.filter(ad => ad.paid === true);
+  const container = document.getElementById("adsContainer");
+  container.innerHTML = "";
+
+  paidAds.forEach(ad => {
+    const card = document.createElement("div");
+    card.className = "ad-card horizontal";
+    card.innerHTML = `
+      <img class="brand-logo" src="${ad.logo || 'https://via.placeholder.com/90'}">
+      <div class="ad-info">
+        <h3>${ad.title}</h3>
+        <p>Brand: ${ad.brand}</p>
+        <p class="price">$${ad.pricePer1000 || ad.price} / 1k views</p>
+        <div class="platform-box">
+          <span>Upload on:</span>
+          <div class="platforms"></div>
+        </div>
+        <button class="promote-btn">Promote</button>
+      </div>
+    `;
+
+    const platformsDiv = card.querySelector(".platforms");
+    ad.platforms.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "platform-item selected";
+      const img = document.createElement("img");
+      img.src = platformIcons[p];
+      img.alt = p;
+      div.appendChild(img);
+      platformsDiv.appendChild(div);
+    });
+
+    card.querySelector(".promote-btn").onclick = () => {
+      localStorage.setItem("selectedAd", JSON.stringify(ad));
+      window.location.href = "ads-detail.html";
+    };
+
+    container.appendChild(card);
+  });
+}
+
+renderAds();
+
+// again for the chat 
+const chatBtn = document.getElementById("chatBtn");
+
+auth.onAuthStateChanged(user => {
+    if(user){
+        const role = localStorage.getItem("userRole");
+        dashboardLink.style.display = (role === "creator") ? "inline-block" : "none";
+        chatBtn.style.display = "inline-block";
+    } else {
+        dashboardLink.style.display = "none";
+        chatBtn.style.display = "none";
+    }
+});
+</script>
+
+<script>
+// Merge promote buttons for chat
+function setupPromoteButtons() {
+  const promoteButtons = document.querySelectorAll(".promote-btn");
+  promoteButtons.forEach((btn, index) => {
+    btn.onclick = () => {
+      const ads = JSON.parse(localStorage.getItem("ads")) || [];
+      const paidAds = ads.filter(ad => ad.paid === true);
+      const ad = paidAds[index];
+      if(!ad.owner) return alert("No owner email found!");
+      sessionStorage.setItem("promoteChatWith", ad.owner);
+      localStorage.setItem("selectedAd", JSON.stringify(ad));
+      window.location.href = "chat.html";
+    };
+  });
+}
+
+setupPromoteButtons();
+</script>
+
+</body>
+</html>

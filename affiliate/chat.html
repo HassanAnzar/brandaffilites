@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<title>BrandAffiliate — My Chats</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background: linear-gradient(-45deg, #0c0f14, #0b0d14, #03021a, #121727 ,#070f14);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+}
+@keyframes gradientBG {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 30px;
+  background:#000;
+  color:#fff;
+}
+.header .logo { font-size:26px; font-weight:bold; }
+.nav a { margin-left:20px; color:#fff; text-decoration:none; font-weight:bold; }
+
+.chat-container {
+  display:flex;
+  max-width:1200px;
+  margin:30px auto;
+  height:70vh;
+  background: rgba(255,255,255,0.06);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.inbox {
+  width:250px;
+  border-right:1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.2);
+  display:flex;
+  flex-direction:column;
+}
+
+.inbox h3 {
+  text-align:center;
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  margin:0;
+}
+
+.user-list {
+  flex:1;
+  overflow-y:auto;
+}
+
+.user-item {
+  padding:12px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.user-item:hover {
+  background: rgba(0,255,213,0.1);
+}
+
+.user-item.active {
+  background: rgba(0,255,213,0.2);
+}
+
+.chat-window {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:12px;
+}
+
+.chat-header {
+  font-weight:bold;
+  border-bottom:1px solid rgba(255,255,255,0.2);
+  padding-bottom:8px;
+  margin-bottom:8px;
+}
+
+.messages {
+  flex:1;
+  overflow-y:auto;
+  padding:8px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.message {
+  max-width:70%;
+  padding:8px 12px;
+  border-radius:12px;
+  word-wrap: break-word;
+}
+
+.message.self {
+  background: #00ffd5;
+  color:#000;
+  align-self:flex-end;
+}
+
+.message.other {
+  background: rgba(255,255,255,0.2);
+  color:#fff;
+  align-self:flex-start;
+}
+
+.message-input {
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
+
+.message-input input {
+  flex:1;
+  padding:10px 12px;
+  border-radius:12px;
+  border:none;
+}
+
+.message-input button {
+  padding:10px 16px;
+  border:none;
+  border-radius:12px;
+  background:#00ffd5;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.profile-stack {
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:8px 0;
+}
+
+.profile-item {
+  padding:6px 12px;
+  background: rgba(255,255,255,0.1);
+  border-radius:12px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.profile-item.active {
+  background: #00ffd5;
+  color:#000;
+}
+
+.footer {
+  text-align:center;
+  padding:15px 0;
+  background-color:#222;
+  color:#fff;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <button onclick="window.location.href='index.html'">Back</button>
+  </nav>
+</header>
+
+<div class="chat-container">
+  <div class="inbox">
+    <h3>Inbox</h3>
+    <div class="user-list" id="userList"></div>
+  </div>
+  <div class="chat-window">
+    <div class="chat-header" id="chatHeader">Select a user to chat</div>
+    <div class="messages" id="messages"></div>
+    <div class="profile-stack" id="profileStack"></div>
+    <div class="message-input">
+      <input type="text" id="messageInput" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/brand_affiliates._com/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+    <a href="https://www.youtube.com/@BrandAffiliates" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// DOM Elements
+const userList = document.getElementById('userList');
+const messagesDiv = document.getElementById('messages');
+const messageInput = document.getElementById('messageInput');
+const sendBtn = document.getElementById('sendBtn');
+const chatHeader = document.getElementById('chatHeader');
+const profileStack = document.getElementById('profileStack');
+
+let currentUser = null;
+let selectedChatUser = null;
+
+// Load chats from localStorage
+let chats = JSON.parse(localStorage.getItem('chats')) || {};
+
+// Helper to render inbox users
+function renderInbox() {
+  userList.innerHTML = '';
+  Object.keys(chats).forEach(user => {
+    const div = document.createElement('div');
+    div.className = 'user-item' + (user===selectedChatUser?' active':'');
+    div.innerText = user;
+    div.onclick = () => selectUser(user);
+    userList.appendChild(div);
+  });
+  renderProfileStack();
+}
+
+// Helper to render stacked profiles
+function renderProfileStack() {
+  profileStack.innerHTML = '';
+  Object.keys(chats).forEach(user => {
+    const div = document.createElement('div');
+    div.className = 'profile-item' + (user===selectedChatUser?' active':'');
+    div.innerText = user.split('@')[0];
+    div.onclick = () => selectUser(user);
+    profileStack.appendChild(div);
+  });
+}
+
+// Select user to chat
+function selectUser(email) {
+  selectedChatUser = email;
+  chatHeader.innerText = 'Chat with ' + email;
+  renderInbox();
+  renderMessages();
+}
+
+// Render messages
+function renderMessages() {
+  messagesDiv.innerHTML = '';
+  if(!selectedChatUser) return;
+  const msgs = chats[selectedChatUser] || [];
+  msgs.forEach(msg => {
+    const div = document.createElement('div');
+    div.className = 'message ' + (msg.sender===currentUser.email?'self':'other');
+    div.innerText = msg.text;
+    messagesDiv.appendChild(div);
+  });
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// Send message
+sendBtn.onclick = () => {
+  const text = messageInput.value.trim();
+  if(!text || !selectedChatUser) return;
+  const msg = { sender: currentUser.email, text };
+  if(!chats[selectedChatUser]) chats[selectedChatUser] = [];
+  chats[selectedChatUser].push(msg);
+  localStorage.setItem('chats', JSON.stringify(chats));
+  messageInput.value='';
+  renderMessages();
+  renderInbox();
+}
+
+// Firebase Auth state
+auth.onAuthStateChanged(user=>{
+  if(user){
+    currentUser = user;
+
+    // Optional: Auto-open chat if redirected from Promote button
+    const promotedUser = sessionStorage.getItem('promoteChatWith');
+    if(promotedUser){
+      selectUser(promotedUser);
+      sessionStorage.removeItem('promoteChatWith');
+    }
+
+    renderInbox();
+  }else{
+    alert('Please login to access chats.');
+    window.location.href='login.html';
+  }
+});
+
+// Function to open chat from Promote button
+function openChatWith(email){
+  if(!chats[email]) chats[email]=[];
+  sessionStorage.setItem('promoteChatWith', email);
+  window.location.href='chat.html';
+}
+</script>
+</body>
+</html>

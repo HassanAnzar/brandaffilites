@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<title>BrandAffiliate — Payment</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(-45deg, #0c0f14, #0b0d14, #03021a, #121727 ,#070f14);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+@keyframes gradientBG {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
+.header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background-color:#000;
+  padding:15px 30px;
+  color:#fff;
+}
+.header .logo { font-size:26px; font-weight:bold; }
+.nav a { margin-left:20px; color:#fff; text-decoration:none; font-weight:bold; }
+.payment-card {
+  max-width:700px;
+  margin:50px auto;
+  background: rgba(255,255,255,0.05);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+.payment-card h2 { color: #ffcc66; margin-bottom:10px; }
+.payment-card img { max-width:120px; margin-bottom:10px; border-radius:12px; }
+.payment-card p { font-size:16px; margin:6px 0; }
+.confirm-btn {
+  background:#00ffd5;
+  color:#000;
+  border:none;
+  padding:12px 22px;
+  font-weight:bold;
+  border-radius:12px;
+  cursor:pointer;
+  margin-top:15px;
+}
+.confirm-btn:hover { transform:scale(1.05); }
+.footer { text-align:center; padding:15px 0; background-color:#222; color:#fff; margin-top:50px; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="ads.html">Browse Ads</a>
+    <a href="#" id="logoutNav">Logout</a>
+  </nav>
+</header>
+
+<div id="paymentContainer" class="payment-card"></div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+  authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+  projectId: "thebrandaffiliates-1b39f",
+  storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+  messagingSenderId: "92844688252",
+  appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+
+<script>
+const container = document.getElementById("paymentContainer");
+const logoutNav = document.getElementById("logoutNav");
+
+auth.onAuthStateChanged(user => {
+  if(!user){
+    alert("Please login first!");
+    window.location.href = "login.html";
+    return;
+  }
+
+  const pendingRaw = localStorage.getItem("pendingAdPayment");
+  if(!pendingRaw){
+    container.innerHTML = "<p>No pending payment found. Go back to dashboard to create an ad.</p>";
+    return;
+  }
+
+  const ad = JSON.parse(pendingRaw);
+
+  container.innerHTML = `
+    ${ad.logo ? `<img src="${ad.logo}" alt="Ad Logo">` : ''}
+    <h2>${ad.title}</h2>
+    <p><b>BrandAffiliate Fee (10%):</b> $${ad.platformFee}</p>
+    <p><b>Total Cost:</b> $${ad.totalCost}</p>
+    <p><b>Your Earnings:</b> $${ad.creatorEarn}</p>
+    <p style="font-size:13px;color:#ff9f43;">⚠ Payment must be made to publish your ad. After payment, your ad will go live.</p>
+    <button id="confirmPayment" class="confirm-btn">Confirm Payment</button>
+  `;
+
+  document.getElementById("confirmPayment").onclick = async () => {
+    // Simulate payment success
+    ad.paid = true;
+    ad.owner = user.email;
+    ad.createdAt = new Date().toISOString();
+
+    try {
+      // Save to Firestore
+      await db.collection("ads").add(ad);
+
+      // Clear local pending
+      localStorage.removeItem("pendingAdPayment");
+
+      alert("Payment confirmed! Your ad is now live.");
+      window.location.href = "ads.html";
+    } catch(e) {
+      console.error(e);
+      alert("Error saving your ad. Try again.");
+    }
+  };
+});
+
+logoutNav.onclick = () => {
+  auth.signOut().then(() => {
+    localStorage.removeItem("userRole");
+    window.location.href = "index.html";
+  });
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" type="image/x-icon" href="kuta.png">
+<title>BrandAffiliate — Ad Details</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #0c0f14, #0b0d14, #03021a, #121727 ,#070f14);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    color: #fff;
+  }
+  @keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+
+  .header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background-color:#000;
+    padding:15px 30px;
+    color:#fff;
+  }
+  .header .logo { font-size:26px; font-weight:bold; }
+  .nav a { margin-left:20px; color:#fff; text-decoration:none; font-weight:bold; }
+
+  .detail-card {
+    display:flex;
+    align-items:flex-start;
+    gap:24px;
+    max-width:800px;
+    margin:50px auto;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:18px 22px;
+    border-radius:18px;
+    transition:0.25s;
+    box-shadow:0 6px 20px rgba(0,0,0,0.5);
+  }
+  .detail-card:hover {
+    border-color:#00ffd5;
+    transform:translateY(-4px);
+  }
+  .brand-logo {
+    width:120px;
+    height:120px;
+    object-fit:contain;
+    background:white;
+    padding:10px;
+    border-radius:14px;
+    flex-shrink:0;
+    box-shadow:0 6px 16px rgba(0,0,0,0.35);
+  }
+  .ad-info { flex:1; display:flex; flex-direction:column; }
+  .ad-info h3 { margin:0; font-size:24px; color:#ffcc66; }
+  .ad-info .brand-name { font-size:18px; font-weight:bold; }
+  .ad-info .price { font-size:17px; font-weight:bold; margin:4px 0; }
+  .ad-info .fee { font-size:15px; color:#00ffd5; margin:2px 0; }
+
+  .ad-info p.description { margin-top:10px; font-size:16px; }
+
+  .promote-btn {
+    padding:10px 20px;
+    border-radius:10px;
+    background:#00ffd5;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:12px;
+  }
+  .promote-btn:hover { transform:scale(1.05); }
+
+  .platforms {
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin:10px 0;
+  }
+  .platform-item {
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:rgba(0,255,213,0.15);
+    border:1px solid rgba(0,255,213,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .12s ease;
+  }
+  .platform-item:hover {
+    transform:translateY(-4px);
+    box-shadow:0 6px 14px rgba(0,255,213,0.06);
+  }
+  .platform-item img {
+    width:24px;
+    height:24px;
+    display:block;
+  }
+
+  .no-ad {
+    max-width:700px;
+    margin:80px auto;
+    padding:28px;
+    background:rgba(255,255,255,0.03);
+    border-radius:12px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .no-ad a { color:#00ffd5; text-decoration:none; font-weight:bold; }
+
+  .footer {
+    text-align:center;
+    padding:15px 0;
+    background-color:#222;
+    color:#fff;
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">BrandAffiliate</div>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="ads.html">Browse Ads</a>
+    <a href="ads-dashboard.html" id="dashboardLink" style="display:none;">Creator Dashboard</a>
+    <a class="kaka" href="login.html" id="loginNav">Login</a>
+    <a class="kaka" href="signup.html" id="signupNav">Sign Up</a>
+    <a href="#" id="logoutNav" style="display:none;">Logout</a>
+  </nav>
+</header>
+
+<div id="adDetail"></div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="terms.html">Terms of Use</a>
+    <a href="policy.html">Privacy Policy</a>
+    <a href="tutorial.html">Tutorial</a>
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/brand_affiliates._com/" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></a>
+    <a href="https://www.youtube.com/@BrandAffiliates" target="_blank"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></a>
+  </div>
+  <p>© 2025 BrandAffiliate. All rights reserved.</p>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCvCp38bxVrHztFlW_ANxbdTPI5oSV7Egs",
+    authDomain: "thebrandaffiliates-1b39f.firebaseapp.com",
+    projectId: "thebrandaffiliates-1b39f",
+    storageBucket: "thebrandaffiliates-1b39f.firebasestorage.app",
+    messagingSenderId: "92844688252",
+    appId: "1:92844688252:web:ce9a14d75bbb51f3ca1af9"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  const dashboardLink = document.getElementById("dashboardLink");
+  const loginNav = document.getElementById("loginNav");
+  const signupNav = document.getElementById("signupNav");
+  const logoutNav = document.getElementById("logoutNav");
+
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      const role = localStorage.getItem("userRole");
+      if (loginNav) loginNav.style.display = "none";
+      if (signupNav) signupNav.style.display = "none";
+      if (logoutNav) logoutNav.style.display = "inline-block";
+      if (dashboardLink) dashboardLink.style.display = (role === "creator") ? "inline-block" : "none";
+    } else {
+      if (loginNav) loginNav.style.display = "inline-block";
+      if (signupNav) signupNav.style.display = "inline-block";
+      if (logoutNav) logoutNav.style.display = "none";
+      if (dashboardLink) dashboardLink.style.display = "none";
+    }
+  });
+
+  if (logoutNav) {
+    logoutNav.onclick = function(){
+      auth.signOut().then(()=>localStorage.removeItem("userRole")).catch(()=>{/* ignore */});
+    };
+  }
+</script>
+
+<script>
+  // platform icons mapping
+  const platformIcons = {
+    Instagram: "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg",
+    TikTok:    "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/tiktok.svg",
+    YouTube:   "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg",
+    Twitter:   "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitter.svg",
+    Reddit:    "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/reddit.svg",
+    Facebook:  "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/facebook.svg"
+  };
+
+  var raw = localStorage.getItem("selectedAd");
+  var selectedAd = null;
+  try {
+    selectedAd = raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.warn("selectedAd parse error", e);
+    selectedAd = null;
+  }
+
+  var container = document.getElementById("adDetail");
+
+  if (!selectedAd) {
+    container.innerHTML = `
+      <div class="no-ad">
+        <h2>No ad selected</h2>
+        <p>It looks like you haven't selected a campaign yet. Go back to the campaigns list to pick one.</p>
+        <p><a href="ads.html">← Back to all campaigns</a></p>
+      </div>
+    `;
+  } else {
+    var platformsHtml = (selectedAd.platforms || []).map(function(p){
+      var icon = platformIcons[p] || "";
+      return '<div class="platform-item" title="'+(p||'')+'">'+
+               (icon ? '<img src="'+icon+'" alt="'+p+'">' : '') +
+             '</div>';
+    }).join("");
+
+    var fee = Number(selectedAd.price || 0) * 0.1; // 10% platform fee
+
+    container.innerHTML = `
+      <div class="detail-card">
+        <img class="brand-logo" src="${escapeHtml(selectedAd.logo || '')}" alt="Brand Logo">
+        <div class="ad-info">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3>${escapeHtml(selectedAd.title || '')}</h3>
+            <span class="brand-name">${escapeHtml(selectedAd.brand || '')}</span>
+          </div>
+          <p class="price">$${Number(selectedAd.price || 0)} / 1k views</p>
+          <p class="fee">Platform Fee (10%): $${fee.toFixed(2)}</p>
+          <div class="platforms">${platformsHtml}</div>
+          <p class="description">${escapeHtml(selectedAd.description || 'No description provided.')}</p>
+          <button class="promote-btn">Confirm Promotion</button>
+        </div>
+      </div>
+    `;
+
+    var promoteBtn = container.querySelector('.promote-btn');
+    if (promoteBtn) {
+      promoteBtn.addEventListener('click', function(){
+        if(!confirm(`You will pay $${fee.toFixed(2)} platform fee. Proceed?`)) return;
+        try {
+          var applied = JSON.parse(localStorage.getItem("appliedAds")||"[]");
+          applied.push({ ad: selectedAd, appliedAt: new Date().toISOString() });
+          localStorage.setItem("appliedAds", JSON.stringify(applied));
+        } catch(e) { /* ignore storage errors */ }
+
+        alert("Promotion confirmed for " + (selectedAd.title || "this campaign") + "!");
+      });
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+</script>
+
+</body>
+</html>
